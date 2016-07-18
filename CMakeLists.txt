@@ -37,6 +37,8 @@
 #----------------------------------------------------------------------
 SET(CMAKE_LEGACY_CYGWIN_WIN32 0) # Remove when CMake >= 2.8.4 is required
 cmake_minimum_required( VERSION 2.8 )
+cmake_policy(SET CMP0040 OLD)
+
 PROJECT( Assimp )
 
 OPTION(BUILD_SHARED_LIBS "Build package with shared libraries." ON)
@@ -139,6 +141,10 @@ INCLUDE (FindPkgConfig)
 INCLUDE_DIRECTORIES( include )
 
 INCLUDE (PrecompiledHeader)
+
+enable_testing()
+find_package(cppcheck REQUIRED)
+INCLUDE (CppcheckTargets)
 
 # If this is an in-source build (CMAKE_SOURCE_DIR == CMAKE_BINARY_DIR),
 # write the library/executable files to the respective directories in the
