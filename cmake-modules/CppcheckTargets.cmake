@@ -40,7 +40,7 @@ endif()
 function(add_cppcheck_sources _targetname)
 	if(CPPCHECK_FOUND)
 		set(_cppcheck_args)
-		list(APPEND _cppcheck_args --xml-results=${_targetname}.xml --xml-version=2 --xml)
+		list(APPEND _cppcheck_args --xml-version=2 --xml)
 		set(_input ${ARGN})
 		list(FIND _input UNUSED_FUNCTIONS _unused_func)
 		if("${_unused_func}" GREATER "-1")
@@ -103,7 +103,7 @@ function(add_cppcheck_sources _targetname)
 				"${CPPCHECK_EXECUTABLE}"
 				${CPPCHECK_TEMPLATE_ARG}
 				${_cppcheck_args}
-				${_files})
+				${_files} 2> ${_targetname}.xml)
 		else()
 			# CMake 2.8.0 and newer
 			add_test(NAME
@@ -112,7 +112,7 @@ function(add_cppcheck_sources _targetname)
 				"${CPPCHECK_EXECUTABLE}"
 				${CPPCHECK_TEMPLATE_ARG}
 				${_cppcheck_args}
-				${_files})
+				${_files} > ${_targetname}.xml)
 		endif()
 
 		set_tests_properties(${_targetname}_cppcheck_test
@@ -144,7 +144,7 @@ function(add_cppcheck _name)
 	endif()
 	if(CPPCHECK_FOUND)
 		set(_cppcheck_args)
-		list(APPEND _cppcheck_args --xml-results=${_name}.xml --xml-version=2 --xml)
+		list(APPEND _cppcheck_args --xml-version=2 --xml)
 
 		list(FIND ARGN UNUSED_FUNCTIONS _unused_func)
 		if("${_unused_func}" GREATER "-1")
@@ -196,7 +196,7 @@ function(add_cppcheck _name)
 				"${CPPCHECK_EXECUTABLE}"
 				${CPPCHECK_TEMPLATE_ARG}
 				${_cppcheck_args}
-				${_files})
+				${_files} 2> ${_name}.xml)
 		else()
 			# CMake 2.8.0 and newer
 			add_test(NAME
@@ -205,7 +205,7 @@ function(add_cppcheck _name)
 				"${CPPCHECK_EXECUTABLE}"
 				${CPPCHECK_TEMPLATE_ARG}
 				${_cppcheck_args}
-				${_files})
+				${_files} 2> ${_name}.xml)
 		endif()
 
 		set_tests_properties(${_name}_cppcheck_test
@@ -222,7 +222,7 @@ function(add_cppcheck _name)
 			${CPPCHECK_TEMPLATE_ARG}
 			${_cppcheck_args}
 			${_includes}
-			${_files}
+			${_files} 2> ${_name}.xml
 			WORKING_DIRECTORY
 			"${CMAKE_CURRENT_SOURCE_DIR}"
 			COMMENT
